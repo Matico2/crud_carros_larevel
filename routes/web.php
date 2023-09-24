@@ -38,4 +38,6 @@ Route::get('/marcas/delete/{id}', [MarcaController::class, 'destroy'])->middlewa
 Route::get('/marcas/editar/{id}', [MarcaController::class, 'edit'])->middleware('auth.basic');
 Route::put('/marcas/editar/{id}', [MarcaController::class, 'update'])->middleware('auth.basic');
 
+
+
 ?>

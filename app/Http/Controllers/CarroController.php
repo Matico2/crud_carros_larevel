@@ -23,6 +23,9 @@ class CarroController extends Controller
         return view("carros.create", ['marcas' => $marcas]);
     }
     
+    
+    
+    
 
     public function store(Request $request) {
         // dd($request->all());

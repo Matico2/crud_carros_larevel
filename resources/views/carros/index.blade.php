@@ -11,11 +11,10 @@
         <div class="row">
             <div class="col">
                 @if ($message = Session::get('success'))
-                    <div class="alert alert-success alert-dismissible" role="alert">
-                        <div>{{ $message }}</div>
-                        <button type="button" class="btn-close" 
-                            data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <div>{{ $message }}</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
                 @endif
             </div>
         </div>
@@ -39,16 +38,23 @@
                 @foreach($carros as $carro)
                 <tr>
                     <td>{{ $carro['modelo'] }}</td>
-                    <td>{{ $carro['marca_id'] }}</td>
+                    <td>
+                        @php
+                        $marca = DB::table('marcas')->where('id', $carro['marca_id'])->value('nome');
+                        echo $marca;
+                        @endphp
+                    </td>
                     <td>{{ $carro['placa'] }}</td>
                     <td>{{ $carro['ano'] }}</td>
                     <td>
                         <a class="btn btn-primary" href="{{ url('/carros/editar', ['id' => $carro['id']]) }}">Editar</a>
-                        <a onclick="confirma(this)" href="{{ url('/carros/delete', ['id' => $carro['id']]) }}" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Deletar</a>
-
+                        <a onclick="confirma(this)" href="{{ url('/carros/delete', ['id' => $carro['id']]) }}"
+                            class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Deletar</a>
                     </td>
                 </tr>
                 @endforeach
+
+
             </table>
         </div>
 
