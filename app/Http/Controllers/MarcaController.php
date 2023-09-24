@@ -4,43 +4,81 @@ namespace App\Http\Controllers;
 
 use App\Models\Marca;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class MarcaController extends Controller
 {
    // MarcaController.php
+   public function index() {
 
-public function index()
-{
-    $marcas = Marca::all();
-    return view('marcas.index', compact('marcas'));
+    $marcas = DB::table('marcas')->orderBy('nome', 'asc')->get();
+    $marcas = json_decode($marcas, true);
+    return view('marcas.index', 
+    ['marcas' => $marcas]); //select * from marcas
 }
 
-public function create()
-{
-    return view('marcas.create');
+//função que irá retornar a tela do form
+public function create() {
+    return view("marcas.create");
 }
 
-public function store(Request $request)
-{
-    Marca::create($request->all());
-    return redirect()->route('marcas.index');
-}
+public function store(Request $request) {
+    //dd($request->all());
 
-public function edit(Marca $marca)
+    $request->validate([
+        'nome' => 'required|min:2|max:50',
+    ]);
+    
+    Marca::create([
+        'nome' => $request->nome,
+    ]);
+    return redirect('/marcas')->with('success', 'Marca salva com sucesso!');
+}
+public function edit($id)
 {
+    $marca = Marca::find($id);
+
+    if (!$marca) {
+        return redirect('/marcas')->with('error', 'Marca não encontrada');
+    }
+
     return view('marcas.edit', compact('marca'));
 }
 
-public function update(Request $request, Marca $marca)
+public function update(Request $request, $id)
 {
-    $marca->update($request->all());
-    return redirect()->route('marcas.index');
+    $marca = Marca::find($id);
+
+    if (!$marca) {
+        return redirect('/marcas')->with('error', 'Marca não encontrada');
+    }
+
+    $request->validate([
+        'nome' => 'required|min:2|max:50',
+    ]);
+
+    $marca->update([
+        'nome' => $request->input('nome'),
+    ]);
+
+    return redirect('/marcas')->with('success', 'Marca atualizada com sucesso');
 }
 
-public function destroy(Marca $marca)
+public function destroy($id)
 {
+    $marca = marca::find($id);
+
+    // Check if the car with the given ID exists
+    if (!$marca) {
+        return redirect('/marcas')->with('error', 'Marca não encontrada');
+    }
+
+    // Use the delete method to delete the car
     $marca->delete();
-    return redirect()->route('marcas.index');
+
+    return redirect('/marcas')->with('success', 'Marca deletada com sucesso');
 }
 
 }
+
+

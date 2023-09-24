@@ -3,19 +3,19 @@
 @section('content')
 <div class="card">
     <div class="card-header">
-       <h2>Cadastro de carros</h2> 
+        <h2>Cadastro de carros</h2>
     </div>
     <div class="card-body">
         <div class="row">
             <div class="col">
                 @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <strong>Problemas com seus dados:</strong>
-                        <br>
-                        @foreach($errors->all() as $error)
-                            <li> {{ $error }}</li>
-                        @endforeach
-                    </div>
+                <div class="alert alert-danger">
+                    <strong>Problemas com seus dados:</strong>
+                    <br>
+                    @foreach($errors->all() as $error)
+                    <li> {{ $error }}</li>
+                    @endforeach
+                </div>
                 @endif
             </div>
         </div>
@@ -27,7 +27,13 @@
                     <strong>Modelo:</strong>
                     <input placeholder="Digite o nome" class="form-control mb-3" name="modelo" type="text" />
                     <strong>Marca:</strong>
-                    <input placeholder="Selecione a marca" class="form-control mb-3" name="marca_id" type="number" />
+                    <select class="form-control mb-3" name="marca_id">
+                        <option value="">Selecione a marca</option>
+                        @foreach($marcas as $marca)
+                        <option value="{{ $marca->id }}">{{ $marca->nome }}</option>
+                        @endforeach
+                    </select>
+
                     <strong>Placa:</strong>
                     <input placeholder="Digite a placa" class="form-control mb-3" name="placa" type="text" />
                     <strong>Ano:</strong>

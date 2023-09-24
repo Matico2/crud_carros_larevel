@@ -1,22 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Marca</title>
+    <!-- Inclua o link para o arquivo CSS do Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-
 <body>
-    <form action="{{ url('marcas/editar') }}" method="POST">
-        @csrf
-        <!-- campo oculto passando o ID como parâmetro no request -->
-        <input type="hidden" name="id" value="{{ $marca['id'] }}">
-        <label>Nome:</label><br> <!-- valor preenchido -->
-        <input name="nome" type="text" value="{{ $marca['nome'] }}" /><br>
-        <input type="submit" value="Salvar" />
-    </form>
-</body>
+    <div class="container">
+        <h2 class="mt-3">Editar Marca</h2>
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <strong>Problemas com seus dados:</strong>
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
 
-</html>
+        <form action="{{ url('marcas/editar/' . $marca['id']) }}" method="POST">
+            @csrf
+            @method('PUT')
+            
+            <div class="form-group">
+                <label for="nome">Nome:</label>
+                <input name="nome" type="text" class="form-control" value="{{ $marca['nome'] }}" />
+            </div>
+
+            <button type="submit" class="btn btn-success">Salvar</button>
+            <a class="btn btn-secondary" href="{{ url('/marcas') }}">Voltar</a>
+        </form>
+    </div>
+    
+    <!-- Inclua o link para o arquivo JavaScript do Bootstrap, se necessário -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min
